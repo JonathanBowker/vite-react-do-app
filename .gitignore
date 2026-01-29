@@ -11,6 +11,7 @@ node_modules
 dist
 dist-ssr
 *.local
+.do_github_repo_name
 
 # Editor directories and files
 .vscode/*
