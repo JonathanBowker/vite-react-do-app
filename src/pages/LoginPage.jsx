@@ -170,9 +170,10 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950">
-      <div className="mx-auto flex min-h-screen max-w-[1400px] flex-col lg:flex-row">
-        <div className="flex w-full items-center justify-center bg-white px-6 py-10 text-slate-900 lg:w-1/2">
+    <div className="min-h-screen bg-slate-100">
+      <div className="mx-auto min-h-screen max-w-[1400px]">
+        <div className="grid min-h-screen grid-cols-1 lg:grid-cols-12">
+          <div className="flex items-center justify-center bg-slate-100 px-6 py-10 text-slate-900 lg:col-span-5">
           <div className="w-full max-w-md">
             <div className="mb-7 flex items-center gap-3">
               <Link
@@ -396,34 +397,35 @@ export default function LoginPage() {
               </div>
             </div>
           </div>
-        </div>
+          </div>
 
-        <div className="relative hidden w-1/2 overflow-hidden lg:block">
-          <div className="absolute inset-0 bg-gradient-to-br from-indigo-950 via-purple-950 to-slate-950" />
-          <div className="absolute -bottom-24 -right-24 h-96 w-96 rounded-full bg-fuchsia-500/20 blur-3xl" />
-          <div className="absolute -top-24 right-10 h-72 w-72 rounded-full bg-indigo-400/20 blur-3xl" />
+          <div className="relative hidden overflow-hidden lg:col-span-7 lg:block">
+            <div className="absolute inset-0 bg-gradient-to-br from-indigo-950 via-purple-950 to-slate-950" />
+            <div className="absolute -bottom-24 -right-24 h-96 w-96 rounded-full bg-fuchsia-500/20 blur-3xl" />
+            <div className="absolute -top-24 right-10 h-72 w-72 rounded-full bg-indigo-400/20 blur-3xl" />
 
-          <div className="relative flex h-full flex-col justify-between p-12 text-white">
-            <div className="flex items-center justify-end text-2xl font-semibold tracking-tight">
-              <span className="mr-2 inline-block h-3 w-3 -skew-x-12 bg-white/90" />
-              make-style
-            </div>
-
-            <div className="max-w-xl">
-              <div className="text-5xl font-semibold leading-tight">
-                Connect apps
-                <br />
-                <span className="bg-gradient-to-r from-fuchsia-300 to-violet-300 bg-clip-text text-transparent">
-                  #withYourApp
-                </span>
+            <div className="relative flex h-full flex-col justify-between p-12 text-white">
+              <div className="flex items-center justify-end text-2xl font-semibold tracking-tight">
+                <span className="mr-2 inline-block h-3 w-3 -skew-x-12 bg-white/90" />
+                make-style
               </div>
-              <p className="mt-6 max-w-lg text-lg text-white/70">
-                From tasks and workflows to apps and systems, build and automate anything in one powerful platform.
-              </p>
-              <p className="mt-10 text-sm text-white/60">Trusted by your team • Secure by design</p>
-            </div>
 
-            <div className="text-xs text-white/40">© {new Date().getFullYear()}</div>
+              <div className="max-w-xl">
+                <div className="text-5xl font-semibold leading-tight">
+                  Connect apps
+                  <br />
+                  <span className="bg-gradient-to-r from-fuchsia-300 to-violet-300 bg-clip-text text-transparent">
+                    #withYourApp
+                  </span>
+                </div>
+                <p className="mt-6 max-w-lg text-lg text-white/70">
+                  From tasks and workflows to apps and systems, build and automate anything in one powerful platform.
+                </p>
+                <p className="mt-10 text-sm text-white/60">Trusted by your team • Secure by design</p>
+              </div>
+
+              <div className="text-xs text-white/40">© {new Date().getFullYear()}</div>
+            </div>
           </div>
         </div>
       </div>
