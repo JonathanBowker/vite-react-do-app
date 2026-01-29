@@ -417,9 +417,9 @@ export default function LoginPage() {
             <div className="flex flex-1 items-center justify-center">
               <div className="max-w-2xl text-center">
                 <div className="text-6xl font-bold leading-[1.05] tracking-tight">
-                  Connect your brand to imtelligent apps
+                  Connect your brand to an intelligent network
                   <br />
-                  <span className="text-[#d66bff]">#withMake</span>
+                  <span className="text-[#d66bff]">#withIBOM</span>
                 </div>
                 <p className="mx-auto mt-8 max-w-xl text-lg text-white/70">
                   From tasks and workflows to apps and systems, build and automate anything in one powerful visual

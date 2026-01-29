@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '../auth/useAuth'
 import { isSupabaseConfigured, supabase } from '../lib/supabaseClient'
 
-function NavLink({ children }) {
+function MenuTrigger({ children }) {
   return (
     <button
       type="button"
@@ -11,6 +11,34 @@ function NavLink({ children }) {
       {children}
       <span className="text-slate-400">▾</span>
     </button>
+  )
+}
+
+function HoverMenu({ label, children }) {
+  return (
+    <div className="group relative">
+      <MenuTrigger>{label}</MenuTrigger>
+      <div className="pointer-events-none absolute left-1/2 top-full z-20 w-[360px] -translate-x-1/2 translate-y-1 opacity-0 transition duration-150 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:translate-y-0 group-focus-within:opacity-100">
+        <div className="relative mt-3 rounded-2xl border border-slate-200 bg-white p-3 shadow-xl">
+          <div className="absolute -top-2 left-1/2 h-4 w-4 -translate-x-1/2 rotate-45 border border-slate-200 bg-white" />
+          <div className="relative">{children}</div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function HoverMegaMenu({ label, children }) {
+  return (
+    <div className="group relative">
+      <MenuTrigger>{label}</MenuTrigger>
+      <div className="pointer-events-none absolute left-1/2 top-full z-20 w-[920px] -translate-x-1/2 translate-y-1 opacity-0 transition duration-150 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:translate-y-0 group-focus-within:opacity-100">
+        <div className="relative mt-3 rounded-2xl border border-slate-200 bg-white p-6 shadow-xl">
+          <div className="absolute -top-2 left-1/2 h-4 w-4 -translate-x-1/2 rotate-45 border border-slate-200 bg-white" />
+          <div className="relative">{children}</div>
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -30,11 +58,123 @@ export default function HomePage() {
           </div>
 
           <nav className="hidden items-center gap-1 lg:flex">
-            <NavLink>What is IBOM</NavLink>
-            <NavLink>IBOM + AI</NavLink>
-            <NavLink>Solutions</NavLink>
-            <NavLink>Resources</NavLink>
-            <NavLink>Partners</NavLink>
+            <HoverMenu label="What is IBOM">
+              <div className="grid gap-1">
+                <a className="rounded-xl px-3 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-50" href="#overview">
+                  Overview
+                </a>
+                <a className="rounded-xl px-3 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-50" href="#how-it-works">
+                  How it works
+                </a>
+                <a className="rounded-xl px-3 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-50" href="#customers">
+                  Customers
+                </a>
+              </div>
+            </HoverMenu>
+
+            <HoverMenu label="IBOM + AI">
+              <div className="grid gap-2 p-1">
+                <a className="flex items-start gap-3 rounded-xl px-3 py-2 hover:bg-slate-50" href="#ai-automation">
+                  <span className="mt-0.5 inline-flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 text-slate-700">
+                    ✦
+                  </span>
+                  <span className="block">
+                    <span className="block text-sm font-semibold text-slate-900">Automation with AI</span>
+                    <span className="block text-xs text-slate-600">Revolutionize your work with AI</span>
+                  </span>
+                </a>
+                <a className="flex items-start gap-3 rounded-xl px-3 py-2 hover:bg-slate-50" href="#agents">
+                  <span className="mt-0.5 inline-flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 text-slate-700">
+                    ☄
+                  </span>
+                  <span className="block">
+                    <span className="block text-sm font-semibold text-slate-900">Agentic automation</span>
+                    <span className="block text-xs text-slate-600">Adaptive flows in real time</span>
+                  </span>
+                </a>
+                <a className="flex items-start gap-3 rounded-xl px-3 py-2 hover:bg-slate-50" href="#mcp">
+                  <span className="mt-0.5 inline-flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 text-slate-700">
+                    ⛓
+                  </span>
+                  <span className="block">
+                    <span className="block text-sm font-semibold text-slate-900">MCP tools</span>
+                    <span className="block text-xs text-slate-600">Connect AI to real business actions</span>
+                  </span>
+                </a>
+              </div>
+            </HoverMenu>
+
+            <HoverMegaMenu label="Solutions">
+              <div className="text-lg font-semibold tracking-tight text-slate-900">IBOM across your business</div>
+
+              <div className="mt-4 grid grid-cols-4 gap-4">
+                {[
+                  ['Marketing', 'Drive faster growth with marketing…', '📣'],
+                  ['Sales', 'Level up your sales cycle to close more…', '📈'],
+                  ['Operations', 'Get teams and tools working together…', '⚙️'],
+                  ['Customer Experience', 'Take better care of customers…', '🎧'],
+                  ['Finance', 'Manage time as well as you manage…', '💳'],
+                  ['Information Technology', 'Efficiently scale and control your IT…', '🖥️'],
+                  ['People', 'Get your HR processes running…', '👥'],
+                  ['Workplace Productivity', 'Automate busy work to focus on…', '🔥'],
+                ].map(([title, desc, icon]) => (
+                  <a key={title} href="#solutions" className="group/item flex gap-3 rounded-xl p-3 hover:bg-slate-50">
+                    <span className="mt-0.5 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-800">
+                      {icon}
+                    </span>
+                    <span className="block">
+                      <span className="block text-sm font-semibold text-slate-900 group-hover/item:text-fuchsia-700">
+                        {title}
+                      </span>
+                      <span className="block text-xs text-slate-600">{desc}</span>
+                    </span>
+                  </a>
+                ))}
+              </div>
+
+              <div className="mt-6 text-lg font-semibold tracking-tight text-slate-900">Popular automations</div>
+              <div className="mt-3 grid grid-cols-4 gap-4">
+                {[
+                  ['Social Media Posting', 'More engagement, less effort'],
+                  ['Lead Management', 'Automate for more conversions'],
+                  ['Invoicing', 'Save time on invoicing and billing'],
+                  ['Contracting', 'Automate and make deals faster'],
+                  ['Email Marketing', 'Increase your email conversions'],
+                  ['Content Creation', 'Generate high quality content with AI'],
+                ].map(([title, desc]) => (
+                  <a key={title} href="#automations" className="rounded-xl p-3 hover:bg-slate-50">
+                    <div className="text-sm font-semibold text-slate-900">{title}</div>
+                    <div className="mt-1 text-xs text-slate-600">{desc}</div>
+                  </a>
+                ))}
+              </div>
+            </HoverMegaMenu>
+
+            <HoverMenu label="Resources">
+              <div className="grid gap-1">
+                <a className="rounded-xl px-3 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-50" href="#docs">
+                  Documentation
+                </a>
+                <a className="rounded-xl px-3 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-50" href="#guides">
+                  Guides
+                </a>
+                <a className="rounded-xl px-3 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-50" href="#community">
+                  Community
+                </a>
+              </div>
+            </HoverMenu>
+
+            <HoverMenu label="Partners">
+              <div className="grid gap-1">
+                <a className="rounded-xl px-3 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-50" href="#partners">
+                  Partner program
+                </a>
+                <a className="rounded-xl px-3 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-50" href="#experts">
+                  Experts directory
+                </a>
+              </div>
+            </HoverMenu>
+
             <button
               type="button"
               className="inline-flex items-center rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100"
