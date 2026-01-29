@@ -26,6 +26,10 @@ export default function HomePage() {
           <p>
             Signed in as <code>{session.user.email}</code>
           </p>
+          <p style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+            <Link to="/portal">Go to portal</Link>
+            <Link to="/protected">Protected example</Link>
+          </p>
           <button onClick={signOut}>Sign out</button>
         </>
       ) : (

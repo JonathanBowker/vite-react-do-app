@@ -6,6 +6,7 @@ import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import ProtectedPage from './pages/ProtectedPage'
 import ResetPasswordPage from './pages/ResetPasswordPage'
+import PortalPage from './pages/PortalPage'
 
 function App() {
   return (
@@ -16,6 +17,14 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
           <Route path="/auth/reset" element={<ResetPasswordPage />} />
+          <Route
+            path="/portal"
+            element={
+              <RequireAuth>
+                <PortalPage />
+              </RequireAuth>
+            }
+          />
           <Route
             path="/protected"
             element={
