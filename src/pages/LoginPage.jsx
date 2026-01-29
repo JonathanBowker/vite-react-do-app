@@ -407,14 +407,7 @@ export default function LoginPage() {
 
           <div className="relative flex h-full min-h-[100svh] flex-col p-12 text-white">
             <div className="flex items-center justify-end">
-              <div className="flex items-center gap-2 text-3xl font-semibold tracking-tight">
-                <span className="inline-flex gap-1">
-                  <span className="h-4 w-1 -skew-x-12 bg-white/90" />
-                  <span className="h-4 w-1 -skew-x-12 bg-white/90" />
-                  <span className="h-4 w-1 -skew-x-12 bg-white/90" />
-                </span>
-                <span>make</span>
-              </div>
+              <div className="text-3xl font-semibold tracking-tight">IBOM</div>
             </div>
 
             <div className="flex flex-1 items-center justify-center">
