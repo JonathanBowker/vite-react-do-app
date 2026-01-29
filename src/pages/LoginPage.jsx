@@ -170,10 +170,9 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-100">
-      <div className="mx-auto min-h-screen max-w-[1400px]">
-        <div className="grid min-h-screen grid-cols-1 lg:grid-cols-12">
-          <div className="flex items-center justify-center bg-slate-100 px-6 py-10 text-slate-900 lg:col-span-5">
+    <div className="min-h-[100svh] w-screen bg-slate-100">
+      <div className="grid min-h-[100svh] w-full grid-cols-1 lg:grid-cols-12">
+        <div className="flex items-center justify-center bg-slate-100 px-6 py-10 text-slate-900 lg:col-span-5">
           <div className="w-full max-w-md">
             <div className="mb-7 flex items-center gap-3">
               <Link
@@ -397,46 +396,43 @@ export default function LoginPage() {
               </div>
             </div>
           </div>
-          </div>
+        </div>
 
-          <div className="relative hidden overflow-hidden lg:col-span-7 lg:block">
-            <div className="absolute inset-0 bg-[#1b1446]" />
-            <div className="absolute inset-0 bg-gradient-to-br from-[#22185a] via-[#1b1446] to-[#150f3a] opacity-95" />
-            <div className="absolute -bottom-28 -right-28 h-[520px] w-[520px] rounded-full bg-[#8b5cf6]/25 blur-3xl" />
-            <div className="absolute -bottom-10 -right-10 h-[360px] w-[360px] rounded-full bg-fuchsia-500/20 blur-3xl" />
-            <div className="absolute -top-28 right-16 h-[420px] w-[420px] rounded-full bg-indigo-400/10 blur-3xl" />
+        <div className="relative hidden overflow-hidden lg:col-span-7 lg:block">
+          <div className="absolute inset-0 bg-[#1b1446]" />
+          <div className="absolute inset-0 bg-gradient-to-br from-[#22185a] via-[#1b1446] to-[#150f3a] opacity-95" />
+          <div className="absolute -bottom-28 -right-28 h-[520px] w-[520px] rounded-full bg-[#8b5cf6]/25 blur-3xl" />
+          <div className="absolute -bottom-10 -right-10 h-[360px] w-[360px] rounded-full bg-fuchsia-500/20 blur-3xl" />
+          <div className="absolute -top-28 right-16 h-[420px] w-[420px] rounded-full bg-indigo-400/10 blur-3xl" />
 
-            <div className="relative flex h-full flex-col p-12 text-white">
-              <div className="flex items-center justify-end">
-                <div className="flex items-center gap-2 text-3xl font-semibold tracking-tight">
-                  <span className="inline-flex gap-1">
-                    <span className="h-4 w-1 -skew-x-12 bg-white/90" />
-                    <span className="h-4 w-1 -skew-x-12 bg-white/90" />
-                    <span className="h-4 w-1 -skew-x-12 bg-white/90" />
-                  </span>
-                  <span>make</span>
-                </div>
+          <div className="relative flex h-full min-h-[100svh] flex-col p-12 text-white">
+            <div className="flex items-center justify-end">
+              <div className="flex items-center gap-2 text-3xl font-semibold tracking-tight">
+                <span className="inline-flex gap-1">
+                  <span className="h-4 w-1 -skew-x-12 bg-white/90" />
+                  <span className="h-4 w-1 -skew-x-12 bg-white/90" />
+                  <span className="h-4 w-1 -skew-x-12 bg-white/90" />
+                </span>
+                <span>make</span>
               </div>
-
-              <div className="flex flex-1 items-center justify-center">
-                <div className="max-w-2xl text-center">
-                  <div className="text-6xl font-semibold leading-[1.05] tracking-tight">
-                    Connect apps
-                    <br />
-                    <span className="text-[#d66bff]">#withMake</span>
-                  </div>
-                  <p className="mx-auto mt-8 max-w-xl text-lg text-white/70">
-                    From tasks and workflows to apps and systems, build and automate anything in one powerful visual
-                    platform.
-                  </p>
-                  <p className="mx-auto mt-10 max-w-xl text-base text-white/60">
-                    Trusted by 500 000+ Makers | Free forever
-                  </p>
-                </div>
-              </div>
-
-              <div className="text-xs text-white/30">© {new Date().getFullYear()}</div>
             </div>
+
+            <div className="flex flex-1 items-center justify-center">
+              <div className="max-w-2xl text-center">
+                <div className="text-6xl font-semibold leading-[1.05] tracking-tight">
+                  Connect apps
+                  <br />
+                  <span className="text-[#d66bff]">#withMake</span>
+                </div>
+                <p className="mx-auto mt-8 max-w-xl text-lg text-white/70">
+                  From tasks and workflows to apps and systems, build and automate anything in one powerful visual
+                  platform.
+                </p>
+                <p className="mx-auto mt-10 max-w-xl text-base text-white/60">Trusted by 500 000+ Makers | Free forever</p>
+              </div>
+            </div>
+
+            <div className="text-xs text-white/30">© {new Date().getFullYear()}</div>
           </div>
         </div>
       </div>
