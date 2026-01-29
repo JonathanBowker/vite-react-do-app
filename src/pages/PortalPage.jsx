@@ -14,54 +14,52 @@ export default function PortalPage() {
   const user = session?.user
 
   return (
-    <div style={{ padding: 24, maxWidth: 960, margin: '0 auto' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
+    <div className="mx-auto max-w-5xl p-6">
+      <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 style={{ marginBottom: 6 }}>Portal</h1>
-          <div style={{ opacity: 0.8 }}>
+          <h1 className="text-3xl font-semibold tracking-tight">Portal</h1>
+          <div className="mt-1 text-sm text-slate-300">
             Signed in as <code>{user?.email}</code>
           </div>
         </div>
-        <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-          <Link to="/" style={{ textDecoration: 'underline' }}>
+        <div className="flex items-center gap-3">
+          <Link to="/" className="text-sm underline decoration-slate-500 underline-offset-4">
             Home
           </Link>
-          <button onClick={signOut}>Sign out</button>
+          <button
+            onClick={signOut}
+            className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-sm hover:bg-slate-800"
+          >
+            Sign out
+          </button>
         </div>
       </div>
 
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-          gap: 16,
-          marginTop: 20,
-        }}
-      >
-        <section style={{ border: '1px solid rgba(255,255,255,0.18)', borderRadius: 12, padding: 16 }}>
-          <h2 style={{ marginTop: 0 }}>Account</h2>
-          <div style={{ display: 'grid', gap: 6 }}>
+      <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
+        <section className="rounded-xl border border-slate-800 bg-slate-950/40 p-4">
+          <h2 className="text-lg font-medium">Account</h2>
+          <div className="mt-3 grid gap-2 text-sm">
             <div>
-              <span style={{ opacity: 0.75 }}>User ID:</span> <code>{user?.id}</code>
+              <span className="text-slate-400">User ID:</span> <code>{user?.id}</code>
             </div>
             {user?.created_at ? (
               <div>
-                <span style={{ opacity: 0.75 }}>Created:</span>{' '}
+                <span className="text-slate-400">Created:</span>{' '}
                 <code>{new Date(user.created_at).toISOString()}</code>
               </div>
             ) : null}
             {user?.last_sign_in_at ? (
               <div>
-                <span style={{ opacity: 0.75 }}>Last sign-in:</span>{' '}
+                <span className="text-slate-400">Last sign-in:</span>{' '}
                 <code>{new Date(user.last_sign_in_at).toISOString()}</code>
               </div>
             ) : null}
           </div>
         </section>
 
-        <section style={{ border: '1px solid rgba(255,255,255,0.18)', borderRadius: 12, padding: 16 }}>
-          <h2 style={{ marginTop: 0 }}>Quick links</h2>
-          <ul style={{ margin: 0, paddingLeft: 18, display: 'grid', gap: 8 }}>
+        <section className="rounded-xl border border-slate-800 bg-slate-950/40 p-4">
+          <h2 className="text-lg font-medium">Quick links</h2>
+          <ul className="mt-3 grid list-disc gap-2 pl-5 text-sm">
             <li>
               <Link to="/protected">Protected example</Link>
             </li>
@@ -74,14 +72,15 @@ export default function PortalPage() {
           </ul>
         </section>
 
-        <section style={{ border: '1px solid rgba(255,255,255,0.18)', borderRadius: 12, padding: 16 }}>
-          <h2 style={{ marginTop: 0 }}>Status</h2>
-          <div style={{ display: 'grid', gap: 8 }}>
+        <section className="rounded-xl border border-slate-800 bg-slate-950/40 p-4">
+          <h2 className="text-lg font-medium">Status</h2>
+          <div className="mt-3 grid gap-2 text-sm">
             <div>
-              <span style={{ opacity: 0.75 }}>Session:</span> <code>active</code>
+              <span className="text-slate-400">Session:</span> <code>active</code>
             </div>
             <div>
-              <span style={{ opacity: 0.75 }}>Access token:</span> <code>{session?.access_token ? 'present' : 'missing'}</code>
+              <span className="text-slate-400">Access token:</span>{' '}
+              <code>{session?.access_token ? 'present' : 'missing'}</code>
             </div>
           </div>
         </section>
@@ -89,4 +88,3 @@ export default function PortalPage() {
     </div>
   )
 }
-
