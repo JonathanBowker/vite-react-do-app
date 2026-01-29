@@ -400,31 +400,42 @@ export default function LoginPage() {
           </div>
 
           <div className="relative hidden overflow-hidden lg:col-span-7 lg:block">
-            <div className="absolute inset-0 bg-gradient-to-br from-indigo-950 via-purple-950 to-slate-950" />
-            <div className="absolute -bottom-24 -right-24 h-96 w-96 rounded-full bg-fuchsia-500/20 blur-3xl" />
-            <div className="absolute -top-24 right-10 h-72 w-72 rounded-full bg-indigo-400/20 blur-3xl" />
+            <div className="absolute inset-0 bg-[#1b1446]" />
+            <div className="absolute inset-0 bg-gradient-to-br from-[#22185a] via-[#1b1446] to-[#150f3a] opacity-95" />
+            <div className="absolute -bottom-28 -right-28 h-[520px] w-[520px] rounded-full bg-[#8b5cf6]/25 blur-3xl" />
+            <div className="absolute -bottom-10 -right-10 h-[360px] w-[360px] rounded-full bg-fuchsia-500/20 blur-3xl" />
+            <div className="absolute -top-28 right-16 h-[420px] w-[420px] rounded-full bg-indigo-400/10 blur-3xl" />
 
-            <div className="relative flex h-full flex-col justify-between p-12 text-white">
-              <div className="flex items-center justify-end text-2xl font-semibold tracking-tight">
-                <span className="mr-2 inline-block h-3 w-3 -skew-x-12 bg-white/90" />
-                make-style
-              </div>
-
-              <div className="max-w-xl">
-                <div className="text-5xl font-semibold leading-tight">
-                  Connect apps
-                  <br />
-                  <span className="bg-gradient-to-r from-fuchsia-300 to-violet-300 bg-clip-text text-transparent">
-                    #withYourApp
+            <div className="relative flex h-full flex-col p-12 text-white">
+              <div className="flex items-center justify-end">
+                <div className="flex items-center gap-2 text-3xl font-semibold tracking-tight">
+                  <span className="inline-flex gap-1">
+                    <span className="h-4 w-1 -skew-x-12 bg-white/90" />
+                    <span className="h-4 w-1 -skew-x-12 bg-white/90" />
+                    <span className="h-4 w-1 -skew-x-12 bg-white/90" />
                   </span>
+                  <span>make</span>
                 </div>
-                <p className="mt-6 max-w-lg text-lg text-white/70">
-                  From tasks and workflows to apps and systems, build and automate anything in one powerful platform.
-                </p>
-                <p className="mt-10 text-sm text-white/60">Trusted by your team • Secure by design</p>
               </div>
 
-              <div className="text-xs text-white/40">© {new Date().getFullYear()}</div>
+              <div className="flex flex-1 items-center justify-center">
+                <div className="max-w-2xl text-center">
+                  <div className="text-6xl font-semibold leading-[1.05] tracking-tight">
+                    Connect apps
+                    <br />
+                    <span className="text-[#d66bff]">#withMake</span>
+                  </div>
+                  <p className="mx-auto mt-8 max-w-xl text-lg text-white/70">
+                    From tasks and workflows to apps and systems, build and automate anything in one powerful visual
+                    platform.
+                  </p>
+                  <p className="mx-auto mt-10 max-w-xl text-base text-white/60">
+                    Trusted by 500 000+ Makers | Free forever
+                  </p>
+                </div>
+              </div>
+
+              <div className="text-xs text-white/30">© {new Date().getFullYear()}</div>
             </div>
           </div>
         </div>
