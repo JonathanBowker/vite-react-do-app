@@ -140,12 +140,18 @@ export default function LoginPage() {
     setBusy(true)
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
-        redirectTo: getRedirectTo(),
+        redirectTo: new URL('/auth/reset', window.location.origin).toString(),
       })
       if (error) throw error
       setStatus({ state: 'sent', message: 'If an account exists, a password reset email has been sent.' })
     } catch (err) {
-      setStatus({ state: 'error', message: err?.message || 'Failed to start password reset.' })
+      const rawMessage = err?.message || 'Failed to start password reset.'
+      const lower = rawMessage.toLowerCase()
+      const isRateLimit = err?.status === 429 || lower.includes('rate limit') || lower.includes('too many')
+      setStatus({
+        state: 'error',
+        message: isRateLimit ? 'Email rate limit exceeded. Wait a few minutes and try again.' : rawMessage,
+      })
     } finally {
       setBusy(false)
     }

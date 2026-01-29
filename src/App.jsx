@@ -5,6 +5,7 @@ import AuthCallback from './pages/AuthCallback'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import ProtectedPage from './pages/ProtectedPage'
+import ResetPasswordPage from './pages/ResetPasswordPage'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
+          <Route path="/auth/reset" element={<ResetPasswordPage />} />
           <Route
             path="/protected"
             element={
