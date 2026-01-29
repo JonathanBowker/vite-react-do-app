@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { isSupabaseConfigured, supabase } from '../lib/supabaseClient'
-import './login.css'
 
 function getRedirectTo() {
   // Must be allowed in Supabase Auth settings (URL Configuration).
@@ -14,10 +13,15 @@ const AUTH_METHOD = {
   password: 'password',
 }
 
+function cn(...parts) {
+  return parts.filter(Boolean).join(' ')
+}
+
 export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [method, setMethod] = useState(AUTH_METHOD.password)
+  const [showPassword, setShowPassword] = useState(false)
   const [status, setStatus] = useState({ state: 'idle', message: '' })
   const [busy, setBusy] = useState(false)
   const [cooldownUntil, setCooldownUntil] = useState(0)
@@ -88,10 +92,6 @@ export default function LoginPage() {
         return
       }
 
-      setStatus({
-        state: 'ok',
-        message: 'Signed in.',
-      })
       const { error } = await supabase.auth.signInWithPassword({
         email: email.trim(),
         password,
@@ -170,95 +170,261 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="page">
-      <div className="card auth-card">
-        <h1>Sign in</h1>
-        <p className="muted">Use password or email magic link.</p>
+    <div className="min-h-screen bg-slate-950">
+      <div className="mx-auto flex min-h-screen max-w-[1400px] flex-col lg:flex-row">
+        <div className="flex w-full items-center justify-center bg-white px-6 py-10 text-slate-900 lg:w-1/2">
+          <div className="w-full max-w-md">
+            <div className="mb-7 flex items-center gap-3">
+              <Link
+                to={nextPath}
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 text-slate-500 hover:bg-slate-50"
+                aria-label="Back"
+              >
+                ←
+              </Link>
+              <h1 className="text-3xl font-semibold tracking-tight">Sign in</h1>
+            </div>
 
-        <div className="tabs">
-          <button
-            className={method === AUTH_METHOD.password ? 'tab active' : 'tab'}
-            type="button"
-            onClick={() => setMethod(AUTH_METHOD.password)}
-            disabled={busy}
-          >
-            Password
-          </button>
-          <button
-            className={method === AUTH_METHOD.magicLink ? 'tab active' : 'tab'}
-            type="button"
-            onClick={() => setMethod(AUTH_METHOD.magicLink)}
-            disabled={busy}
-          >
-            Magic link
-          </button>
+            <div className="space-y-5">
+              <div className="space-y-2">
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setMethod(AUTH_METHOD.password)}
+                    disabled={busy}
+                    className={cn(
+                      'flex-1 rounded-xl border px-4 py-2 text-sm font-medium',
+                      method === AUTH_METHOD.password
+                        ? 'border-slate-900 bg-slate-900 text-white'
+                        : 'border-slate-200 bg-white text-slate-900 hover:bg-slate-50',
+                    )}
+                  >
+                    Password
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setMethod(AUTH_METHOD.magicLink)}
+                    disabled={busy}
+                    className={cn(
+                      'flex-1 rounded-xl border px-4 py-2 text-sm font-medium',
+                      method === AUTH_METHOD.magicLink
+                        ? 'border-slate-900 bg-slate-900 text-white'
+                        : 'border-slate-200 bg-white text-slate-900 hover:bg-slate-50',
+                    )}
+                  >
+                    Magic link
+                  </button>
+                </div>
+                <p className="text-sm text-slate-500">
+                  {method === AUTH_METHOD.password
+                    ? 'Sign in with your email and password.'
+                    : 'We’ll email you a one-time sign-in link (existing users only).'}
+                </p>
+              </div>
+
+              <form onSubmit={signIn} className="space-y-4">
+                <div className="space-y-1.5">
+                  <label className="text-sm font-medium">
+                    Email <span className="text-pink-600">*</span>
+                  </label>
+                  <input
+                    className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm outline-none placeholder:text-slate-400 focus:border-slate-400"
+                    type="email"
+                    autoComplete="email"
+                    inputMode="email"
+                    placeholder="you@company.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    disabled={busy}
+                    required
+                  />
+                </div>
+
+                {method === AUTH_METHOD.password ? (
+                  <div className="space-y-1.5">
+                    <div className="flex items-baseline justify-between gap-4">
+                      <label className="text-sm font-medium">
+                        Password <span className="text-pink-600">*</span>
+                      </label>
+                      <button
+                        className="text-sm text-slate-500 underline decoration-slate-300 underline-offset-4 hover:text-slate-700"
+                        type="button"
+                        onClick={forgotPassword}
+                        disabled={busy}
+                      >
+                        Forgot password?
+                      </button>
+                    </div>
+                    <div className="relative">
+                      <input
+                        className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 pr-10 text-sm outline-none placeholder:text-slate-400 focus:border-slate-400"
+                        type={showPassword ? 'text' : 'password'}
+                        autoComplete="current-password"
+                        placeholder="••••••••"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        disabled={busy}
+                        required
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword((v) => !v)}
+                        disabled={busy}
+                        className="absolute inset-y-0 right-0 inline-flex items-center px-3 text-slate-400 hover:text-slate-600"
+                        aria-label={showPassword ? 'Hide password' : 'Show password'}
+                      >
+                        <svg
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="h-4 w-4"
+                        >
+                          {showPassword ? (
+                            <>
+                              <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" />
+                              <circle cx="12" cy="12" r="3" />
+                            </>
+                          ) : (
+                            <>
+                              <path d="M10.3 5.2A9.8 9.8 0 0 1 12 5c6.5 0 10 7 10 7a17.2 17.2 0 0 1-3.2 4.3" />
+                              <path d="M6.6 6.6A16 16 0 0 0 2 12s3.5 7 10 7c1.1 0 2.1-.2 3.1-.5" />
+                              <path d="M14.1 14.1A3 3 0 0 1 9.9 9.9" />
+                              <path d="M3 3l18 18" />
+                            </>
+                          )}
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                ) : null}
+
+                <button
+                  className={cn(
+                    'w-full rounded-xl px-4 py-3 text-sm font-semibold text-white shadow-sm',
+                    'bg-gradient-to-r from-fuchsia-500 to-indigo-500 hover:from-fuchsia-400 hover:to-indigo-400',
+                    'disabled:cursor-not-allowed disabled:opacity-60',
+                  )}
+                  type="submit"
+                  disabled={busy || (method === AUTH_METHOD.magicLink && inCooldown)}
+                >
+                  {busy
+                    ? 'Working…'
+                    : method === AUTH_METHOD.magicLink
+                      ? inCooldown
+                        ? `Try again in ${cooldownSeconds}s`
+                        : 'Send magic link'
+                      : 'Sign in'}
+                </button>
+              </form>
+
+              {status.message ? (
+                <div
+                  className={cn(
+                    'rounded-xl border px-3 py-2 text-sm',
+                    status.state === 'error'
+                      ? 'border-red-200 bg-red-50 text-red-800'
+                      : 'border-emerald-200 bg-emerald-50 text-emerald-800',
+                  )}
+                >
+                  {status.message}
+                </div>
+              ) : null}
+
+              {!isSupabaseConfigured ? (
+                <div className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900">
+                  Supabase not configured. Set <code>VITE_SUPABASE_URL</code> and <code>VITE_SUPABASE_ANON_KEY</code>.
+                </div>
+              ) : null}
+
+              <div className="flex items-center gap-3 py-2">
+                <div className="h-px flex-1 bg-slate-200" />
+                <div className="text-xs uppercase tracking-wider text-slate-400">or</div>
+                <div className="h-px flex-1 bg-slate-200" />
+              </div>
+
+              <div className="space-y-3">
+                <button
+                  type="button"
+                  disabled
+                  className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 opacity-60"
+                  title="Google sign-in not configured"
+                >
+                  <span className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-slate-200">
+                    G
+                  </span>
+                  Continue with Google
+                </button>
+
+                <button
+                  type="button"
+                  disabled
+                  className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 opacity-60"
+                  title="SSO not configured"
+                >
+                  <span className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-slate-200">
+                    🔑
+                  </span>
+                  Continue with SSO
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setMethod((m) => (m === AUTH_METHOD.password ? AUTH_METHOD.magicLink : AUTH_METHOD.password))}
+                  disabled={busy}
+                  className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-slate-900 hover:bg-slate-50"
+                >
+                  See other options
+                </button>
+              </div>
+
+              <div className="pt-2 text-center text-sm text-slate-500">
+                Don’t have an account? <span className="text-slate-400">Ask an admin to invite you.</span>
+              </div>
+
+              <div className="pt-2 text-center">
+                <button
+                  className="text-sm text-slate-500 underline decoration-slate-300 underline-offset-4 hover:text-slate-700"
+                  type="button"
+                  onClick={signOut}
+                  disabled={busy}
+                >
+                  Sign out
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <form onSubmit={signIn} className="form">
-          <label className="label">
-            Email
-            <input
-              className="input"
-              type="email"
-              autoComplete="email"
-              inputMode="email"
-              placeholder="you@company.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              disabled={busy}
-              required
-            />
-          </label>
+        <div className="relative hidden w-1/2 overflow-hidden lg:block">
+          <div className="absolute inset-0 bg-gradient-to-br from-indigo-950 via-purple-950 to-slate-950" />
+          <div className="absolute -bottom-24 -right-24 h-96 w-96 rounded-full bg-fuchsia-500/20 blur-3xl" />
+          <div className="absolute -top-24 right-10 h-72 w-72 rounded-full bg-indigo-400/20 blur-3xl" />
 
-          {method === AUTH_METHOD.password ? (
-            <label className="label">
-              Password
-              <input
-                className="input"
-                type="password"
-                autoComplete="current-password"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                disabled={busy}
-                required
-              />
-            </label>
-          ) : null}
-
-          <button className="button primary" type="submit" disabled={busy || (method === AUTH_METHOD.magicLink && inCooldown)}>
-            {busy
-              ? 'Working…'
-              : method === AUTH_METHOD.magicLink
-                ? inCooldown
-                  ? `Try again in ${cooldownSeconds}s`
-                  : 'Send magic link'
-                : 'Sign in'}
-          </button>
-
-          {method === AUTH_METHOD.password ? (
-            <div className="row">
-              <button className="button subtle" type="button" onClick={forgotPassword} disabled={busy}>
-                Forgot password?
-              </button>
-              <span className="muted" style={{ fontSize: 12 }}>
-                Password reset sends an email
-              </span>
+          <div className="relative flex h-full flex-col justify-between p-12 text-white">
+            <div className="flex items-center justify-end text-2xl font-semibold tracking-tight">
+              <span className="mr-2 inline-block h-3 w-3 -skew-x-12 bg-white/90" />
+              make-style
             </div>
-          ) : null}
-        </form>
 
-        {status.message ? (
-          <div className={status.state === 'error' ? 'alert error' : 'alert ok'}>{status.message}</div>
-        ) : null}
+            <div className="max-w-xl">
+              <div className="text-5xl font-semibold leading-tight">
+                Connect apps
+                <br />
+                <span className="bg-gradient-to-r from-fuchsia-300 to-violet-300 bg-clip-text text-transparent">
+                  #withYourApp
+                </span>
+              </div>
+              <p className="mt-6 max-w-lg text-lg text-white/70">
+                From tasks and workflows to apps and systems, build and automate anything in one powerful platform.
+              </p>
+              <p className="mt-10 text-sm text-white/60">Trusted by your team • Secure by design</p>
+            </div>
 
-        <div className="footer">
-          <button className="button subtle" type="button" onClick={() => navigate(nextPath)} disabled={busy}>
-            Continue without signing in
-          </button>
-          <button className="button subtle" type="button" onClick={signOut} disabled={busy}>
-            Sign out
-          </button>
+            <div className="text-xs text-white/40">© {new Date().getFullYear()}</div>
+          </div>
         </div>
       </div>
     </div>
