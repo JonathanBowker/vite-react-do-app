@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { isSupabaseConfigured, supabase } from '../lib/supabaseClient'
 import './login.css'
@@ -8,10 +8,14 @@ function getRedirectTo() {
   return new URL('/auth/callback', window.location.origin).toString()
 }
 
+const RESEND_COOLDOWN_MS = 60_000
+
 export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [status, setStatus] = useState({ state: 'idle', message: '' })
   const [busy, setBusy] = useState(false)
+  const [cooldownUntil, setCooldownUntil] = useState(0)
+  const [now, setNow] = useState(() => Date.now())
 
   const location = useLocation()
   const navigate = useNavigate()
@@ -20,6 +24,15 @@ export default function LoginPage() {
     const from = location.state?.from?.pathname
     return typeof from === 'string' && from.startsWith('/') ? from : '/'
   }, [location.state])
+
+  const cooldownSeconds = Math.max(0, Math.ceil((cooldownUntil - now) / 1000))
+  const inCooldown = cooldownSeconds > 0
+
+  useEffect(() => {
+    if (!inCooldown) return
+    const intervalId = setInterval(() => setNow(Date.now()), 250)
+    return () => clearInterval(intervalId)
+  }, [inCooldown])
 
   async function sendMagicLink(event) {
     event.preventDefault()
@@ -38,6 +51,11 @@ export default function LoginPage() {
       return
     }
 
+    if (inCooldown) {
+      setStatus({ state: 'error', message: `Please wait ${cooldownSeconds}s before trying again.` })
+      return
+    }
+
     setBusy(true)
     try {
       const { error } = await supabase.auth.signInWithOtp({
@@ -50,15 +68,25 @@ export default function LoginPage() {
 
       if (error) throw error
 
+      setCooldownUntil(Date.now() + RESEND_COOLDOWN_MS)
       setStatus({
         state: 'sent',
         message: 'Check your email for a sign-in link.',
       })
     } catch (err) {
       const rawMessage = err?.message || 'Failed to send magic link.'
-      const message = rawMessage.toLowerCase().includes('user not found')
-        ? 'No account exists for that email. Ask an admin to invite you first.'
-        : rawMessage
+      const lower = rawMessage.toLowerCase()
+      const isRateLimit = err?.status === 429 || lower.includes('rate limit') || lower.includes('too many')
+      const message = isRateLimit
+        ? 'Email rate limit exceeded. Wait a few minutes and try again.'
+        : lower.includes('user not found')
+          ? 'No account exists for that email. Ask an admin to invite you first.'
+          : rawMessage
+
+      if (isRateLimit) {
+        setCooldownUntil(Date.now() + RESEND_COOLDOWN_MS)
+      }
+
       setStatus({
         state: 'error',
         message,
@@ -100,8 +128,8 @@ export default function LoginPage() {
             />
           </label>
 
-          <button className="button primary" type="submit" disabled={busy}>
-            {busy ? 'Sending…' : 'Send magic link'}
+          <button className="button primary" type="submit" disabled={busy || inCooldown}>
+            {busy ? 'Sending…' : inCooldown ? `Try again in ${cooldownSeconds}s` : 'Send magic link'}
           </button>
         </form>
 
