@@ -2,6 +2,18 @@ import { Link } from 'react-router-dom'
 import { useAuth } from '../auth/useAuth'
 import { isSupabaseConfigured, supabase } from '../lib/supabaseClient'
 
+function NavLink({ children }) {
+  return (
+    <button
+      type="button"
+      className="inline-flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100"
+    >
+      {children}
+      <span className="text-slate-400">▾</span>
+    </button>
+  )
+}
+
 export default function HomePage() {
   const { session, loading } = useAuth()
 
@@ -10,38 +22,188 @@ export default function HomePage() {
   }
 
   return (
-    <div style={{ padding: 24 }}>
-      <h1>React + Magic Link Auth</h1>
+    <div className="min-h-[100svh] bg-slate-100">
+      <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/90 backdrop-blur">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6 py-4">
+          <div className="flex items-center gap-3">
+            <div className="text-2xl font-semibold tracking-tight text-slate-900">IBOM</div>
+          </div>
 
-      {!isSupabaseConfigured ? (
-        <p>
-          Supabase not configured. Set <code>VITE_SUPABASE_URL</code> and <code>VITE_SUPABASE_ANON_KEY</code>.
-        </p>
-      ) : null}
+          <nav className="hidden items-center gap-1 lg:flex">
+            <NavLink>What is IBOM</NavLink>
+            <NavLink>IBOM + AI</NavLink>
+            <NavLink>Solutions</NavLink>
+            <NavLink>Resources</NavLink>
+            <NavLink>Partners</NavLink>
+            <button
+              type="button"
+              className="inline-flex items-center rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100"
+            >
+              Pricing
+            </button>
+          </nav>
 
-      {loading ? (
-        <p>Loading…</p>
-      ) : session ? (
-        <>
-          <p>
-            Signed in as <code>{session.user.email}</code>
-          </p>
-          <p style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-            <Link to="/portal">Go to portal</Link>
-            <Link to="/protected">Protected example</Link>
-          </p>
-          <button onClick={signOut}>Sign out</button>
-        </>
-      ) : (
-        <>
-          <p>You’re not signed in.</p>
-          <Link to="/login">Go to login</Link>
-        </>
-      )}
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              className="hidden rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 sm:inline-flex"
+            >
+              Talk to sales
+            </button>
 
-      <p style={{ marginTop: 16 }}>
-        Protected page: <Link to="/protected">/protected</Link>
-      </p>
+            {loading ? null : session ? (
+              <>
+                <Link
+                  to="/portal"
+                  className="inline-flex items-center rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-50"
+                >
+                  Portal
+                </Link>
+                <button
+                  onClick={signOut}
+                  className="inline-flex items-center rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800"
+                >
+                  Sign out
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className="inline-flex items-center rounded-xl border border-fuchsia-300 bg-white px-4 py-2 text-sm font-semibold text-fuchsia-700 hover:bg-fuchsia-50"
+                >
+                  Log in
+                </Link>
+                <Link
+                  to="/login"
+                  className="inline-flex items-center rounded-xl bg-gradient-to-r from-fuchsia-500 to-indigo-500 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:from-fuchsia-400 hover:to-indigo-400"
+                >
+                  Get started free
+                </Link>
+              </>
+            )}
+          </div>
+        </div>
+      </header>
+
+      <main>
+        <section className="relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-[#1b1446] via-[#1b1446] to-[#120c30]" />
+          <div className="absolute -bottom-44 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-fuchsia-500/20 blur-3xl" />
+          <div className="absolute -bottom-40 right-[-140px] h-[520px] w-[520px] rounded-full bg-violet-400/15 blur-3xl" />
+
+          <div className="relative mx-auto max-w-7xl px-6 py-20 lg:py-28">
+            <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12">
+              <div className="lg:col-span-7">
+                <h1 className="text-4xl font-semibold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
+                  AI automation you can
+                  <br />
+                  visually build and
+                  <br />
+                  orchestrate in real time
+                </h1>
+                <p className="mt-6 max-w-2xl text-base text-white/70 sm:text-lg">
+                  IBOM brings no-code automation and AI agents into one visual-first platform so you can build with
+                  speed and scale with control.
+                </p>
+
+                <div className="mt-8 flex flex-wrap items-center gap-4">
+                  <Link
+                    to="/login"
+                    className="inline-flex items-center justify-center rounded-2xl bg-gradient-to-r from-fuchsia-500 to-indigo-500 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:from-fuchsia-400 hover:to-indigo-400"
+                  >
+                    Get started free
+                  </Link>
+                  <button
+                    type="button"
+                    className="inline-flex items-center justify-center rounded-2xl bg-white/10 px-6 py-3 text-sm font-semibold text-white ring-1 ring-white/20 hover:bg-white/15"
+                  >
+                    Talk to sales
+                  </button>
+                </div>
+
+                <div className="mt-6 flex flex-wrap gap-x-8 gap-y-2 text-sm text-white/80">
+                  <div className="flex items-center gap-2">
+                    <span className="text-emerald-400">✓</span>
+                    No credit card required
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-emerald-400">✓</span>
+                    No time limit on Free plan
+                  </div>
+                </div>
+              </div>
+
+              <div className="relative lg:col-span-5">
+                <div className="relative mx-auto h-56 w-full max-w-md lg:h-72">
+                  <div className="absolute left-0 top-10 flex items-center gap-6">
+                    <div className="grid h-16 w-16 place-items-center rounded-full bg-cyan-500/90 shadow-lg shadow-cyan-500/20 ring-1 ring-white/20">
+                      <span className="text-lg font-black text-white">A</span>
+                    </div>
+                    <div className="h-px w-14 bg-white/25" />
+                    <div className="grid h-16 w-16 place-items-center rounded-full bg-violet-500/90 shadow-lg shadow-violet-500/20 ring-1 ring-white/20">
+                      <span className="text-lg font-black text-white">◎</span>
+                    </div>
+                    <div className="h-px w-14 bg-white/25" />
+                    <div className="grid h-16 w-16 place-items-center rounded-full bg-white/10 ring-1 ring-white/15">
+                      <span className="text-lg text-white/80">✦</span>
+                    </div>
+                  </div>
+
+                  <div className="absolute -right-8 -bottom-10 h-40 w-40 rounded-full bg-fuchsia-400/15 blur-2xl" />
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-14 border-t border-white/10 pt-10">
+              <div className="flex flex-wrap items-center justify-between gap-x-10 gap-y-6 text-white/30">
+                <div className="text-xl font-semibold tracking-tight">bambooHR</div>
+                <div className="text-xl font-semibold tracking-tight">BNY</div>
+                <div className="text-xl font-semibold tracking-tight">Bolt</div>
+                <div className="text-xl font-semibold tracking-tight">FINN</div>
+                <div className="text-xl font-semibold tracking-tight">GoJob</div>
+                <div className="text-xl font-semibold tracking-tight">tally</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="mx-auto max-w-7xl px-6 py-14">
+          <div className="grid gap-6 rounded-3xl border border-slate-200 bg-white p-8 lg:grid-cols-3">
+            <div>
+              <div className="text-sm font-semibold text-slate-500">Quick links</div>
+              <div className="mt-2 text-2xl font-semibold tracking-tight text-slate-900">Get around</div>
+              <p className="mt-2 text-sm text-slate-600">
+                Use these routes while we build out the rest of the product.
+              </p>
+            </div>
+            <div className="grid gap-3 text-sm">
+              <Link className="rounded-xl border border-slate-200 px-4 py-3 font-semibold text-slate-900 hover:bg-slate-50" to="/login">
+                Sign in
+              </Link>
+              <Link className="rounded-xl border border-slate-200 px-4 py-3 font-semibold text-slate-900 hover:bg-slate-50" to="/protected">
+                Protected example
+              </Link>
+              <Link className="rounded-xl border border-slate-200 px-4 py-3 font-semibold text-slate-900 hover:bg-slate-50" to="/auth/reset">
+                Reset password
+              </Link>
+            </div>
+            <div className="rounded-2xl bg-slate-50 p-6">
+              <div className="text-sm font-semibold text-slate-500">Status</div>
+              <div className="mt-2 text-sm text-slate-700">
+                Supabase configured:{' '}
+                <span className={isSupabaseConfigured ? 'font-semibold text-emerald-600' : 'font-semibold text-amber-600'}>
+                  {isSupabaseConfigured ? 'yes' : 'no'}
+                </span>
+              </div>
+              <div className="mt-2 text-sm text-slate-700">
+                Session:{' '}
+                <span className="font-semibold text-slate-900">{loading ? 'loading' : session ? 'signed in' : 'signed out'}</span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
     </div>
   )
 }
