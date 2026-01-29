@@ -9,9 +9,15 @@ function getRedirectTo() {
 }
 
 const RESEND_COOLDOWN_MS = 60_000
+const AUTH_METHOD = {
+  magicLink: 'magic_link',
+  password: 'password',
+}
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [method, setMethod] = useState(AUTH_METHOD.password)
   const [status, setStatus] = useState({ state: 'idle', message: '' })
   const [busy, setBusy] = useState(false)
   const [cooldownUntil, setCooldownUntil] = useState(0)
@@ -34,7 +40,7 @@ export default function LoginPage() {
     return () => clearInterval(intervalId)
   }, [inCooldown])
 
-  async function sendMagicLink(event) {
+  async function signIn(event) {
     event.preventDefault()
     setStatus({ state: 'idle', message: '' })
 
@@ -51,28 +57,47 @@ export default function LoginPage() {
       return
     }
 
-    if (inCooldown) {
-      setStatus({ state: 'error', message: `Please wait ${cooldownSeconds}s before trying again.` })
-      return
-    }
-
     setBusy(true)
     try {
-      const { error } = await supabase.auth.signInWithOtp({
+      if (method === AUTH_METHOD.magicLink) {
+        if (inCooldown) {
+          setStatus({ state: 'error', message: `Please wait ${cooldownSeconds}s before trying again.` })
+          return
+        }
+
+        const { error } = await supabase.auth.signInWithOtp({
+          email: email.trim(),
+          options: {
+            emailRedirectTo: getRedirectTo(),
+            shouldCreateUser: false,
+          },
+        })
+
+        if (error) throw error
+
+        setCooldownUntil(Date.now() + RESEND_COOLDOWN_MS)
+        setStatus({
+          state: 'sent',
+          message: 'Check your email for a sign-in link.',
+        })
+        return
+      }
+
+      if (!password) {
+        setStatus({ state: 'error', message: 'Enter a password.' })
+        return
+      }
+
+      setStatus({
+        state: 'ok',
+        message: 'Signed in.',
+      })
+      const { error } = await supabase.auth.signInWithPassword({
         email: email.trim(),
-        options: {
-          emailRedirectTo: getRedirectTo(),
-          shouldCreateUser: false,
-        },
+        password,
       })
 
       if (error) throw error
-
-      setCooldownUntil(Date.now() + RESEND_COOLDOWN_MS)
-      setStatus({
-        state: 'sent',
-        message: 'Check your email for a sign-in link.',
-      })
     } catch (err) {
       const rawMessage = err?.message || 'Failed to send magic link.'
       const lower = rawMessage.toLowerCase()
@@ -96,6 +121,36 @@ export default function LoginPage() {
     }
   }
 
+  async function forgotPassword() {
+    setStatus({ state: 'idle', message: '' })
+
+    if (!isSupabaseConfigured || !supabase) {
+      setStatus({
+        state: 'error',
+        message: 'Supabase is not configured. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.',
+      })
+      return
+    }
+
+    if (!email.trim()) {
+      setStatus({ state: 'error', message: 'Enter your email first.' })
+      return
+    }
+
+    setBusy(true)
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+        redirectTo: getRedirectTo(),
+      })
+      if (error) throw error
+      setStatus({ state: 'sent', message: 'If an account exists, a password reset email has been sent.' })
+    } catch (err) {
+      setStatus({ state: 'error', message: err?.message || 'Failed to start password reset.' })
+    } finally {
+      setBusy(false)
+    }
+  }
+
   async function signOut() {
     setBusy(true)
     try {
@@ -110,9 +165,28 @@ export default function LoginPage() {
     <div className="page">
       <div className="card auth-card">
         <h1>Sign in</h1>
-        <p className="muted">We’ll email you a magic link.</p>
+        <p className="muted">Use password or email magic link.</p>
 
-        <form onSubmit={sendMagicLink} className="form">
+        <div className="tabs">
+          <button
+            className={method === AUTH_METHOD.password ? 'tab active' : 'tab'}
+            type="button"
+            onClick={() => setMethod(AUTH_METHOD.password)}
+            disabled={busy}
+          >
+            Password
+          </button>
+          <button
+            className={method === AUTH_METHOD.magicLink ? 'tab active' : 'tab'}
+            type="button"
+            onClick={() => setMethod(AUTH_METHOD.magicLink)}
+            disabled={busy}
+          >
+            Magic link
+          </button>
+        </div>
+
+        <form onSubmit={signIn} className="form">
           <label className="label">
             Email
             <input
@@ -128,9 +202,42 @@ export default function LoginPage() {
             />
           </label>
 
-          <button className="button primary" type="submit" disabled={busy || inCooldown}>
-            {busy ? 'Sending…' : inCooldown ? `Try again in ${cooldownSeconds}s` : 'Send magic link'}
+          {method === AUTH_METHOD.password ? (
+            <label className="label">
+              Password
+              <input
+                className="input"
+                type="password"
+                autoComplete="current-password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                disabled={busy}
+                required
+              />
+            </label>
+          ) : null}
+
+          <button className="button primary" type="submit" disabled={busy || (method === AUTH_METHOD.magicLink && inCooldown)}>
+            {busy
+              ? 'Working…'
+              : method === AUTH_METHOD.magicLink
+                ? inCooldown
+                  ? `Try again in ${cooldownSeconds}s`
+                  : 'Send magic link'
+                : 'Sign in'}
           </button>
+
+          {method === AUTH_METHOD.password ? (
+            <div className="row">
+              <button className="button subtle" type="button" onClick={forgotPassword} disabled={busy}>
+                Forgot password?
+              </button>
+              <span className="muted" style={{ fontSize: 12 }}>
+                Password reset sends an email
+              </span>
+            </div>
+          ) : null}
         </form>
 
         {status.message ? (

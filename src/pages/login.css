@@ -23,6 +23,36 @@
   margin-top: 16px;
 }
 
+.tabs {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.tab {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+  color: inherit;
+  cursor: pointer;
+}
+
+.tab.active {
+  border-color: rgba(100, 108, 255, 0.6);
+  background: rgba(100, 108, 255, 0.2);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 10px;
+}
+
 .label {
   display: grid;
   gap: 8px;
@@ -83,4 +113,3 @@
   margin-top: 14px;
   gap: 12px;
 }
-
