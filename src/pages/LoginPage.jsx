@@ -174,15 +174,25 @@ export default function LoginPage() {
       <div className="grid min-h-[100svh] w-full grid-cols-1 lg:grid-cols-12">
         <div className="flex items-center justify-center bg-slate-100 px-6 py-10 text-slate-900 lg:col-span-5">
           <div className="w-full max-w-md lg:w-3/5 lg:max-w-none">
-            <div className="mb-7 flex items-center gap-3">
+            <div className="relative mb-7">
               <Link
                 to={nextPath}
-                className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-slate-200 text-slate-500 hover:bg-slate-50"
+                className="inline-flex h-10 w-10 items-center justify-center text-slate-400 hover:text-slate-600 lg:absolute lg:-left-14 lg:top-1/2 lg:-translate-y-1/2"
                 aria-label="Back"
               >
-                ←
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-6 w-6"
+                >
+                  <path d="M15 18l-6-6 6-6" />
+                </svg>
               </Link>
-              <h1 className="text-3xl font-semibold tracking-tight">Sign in</h1>
+              <h1 className="text-3xl font-semibold tracking-tight text-slate-900">Sign in</h1>
             </div>
 
             <div className="space-y-5">
@@ -412,7 +422,7 @@ export default function LoginPage() {
 
             <div className="flex flex-1 items-center justify-center">
               <div className="max-w-2xl text-center">
-                <div className="text-6xl font-semibold leading-[1.05] tracking-tight">
+                <div className="text-6xl font-bold leading-[1.05] tracking-tight">
                   Connect apps
                   <br />
                   <span className="text-[#d66bff]">#withMake</span>
