@@ -176,18 +176,18 @@ export default function LoginPage() {
           <div className="w-full max-w-md lg:w-3/5 lg:max-w-none lg:translate-x-20">
             <div className="relative mb-7">
               <Link
-                to={nextPath}
-                className="inline-flex h-14 w-14 items-center justify-center text-slate-400 hover:text-slate-600 lg:absolute lg:-left-10 lg:top-1/2 lg:-translate-y-1/2"
+                to="/"
+                className="inline-flex h-10 w-10 items-center justify-center text-slate-400 hover:text-slate-600 lg:absolute lg:-left-16 lg:top-1/2 lg:-translate-y-1/2"
                 aria-label="Back"
               >
                 <svg
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  strokeWidth="2"
+                  strokeWidth="1.25"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className="h-16 w-16"
+                  className="h-9 w-9"
                 >
                   <path d="M15 18l-6-6 6-6" />
                 </svg>
