@@ -236,11 +236,11 @@ export default function HomePage() {
             <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12">
               <div className="lg:col-span-7">
                 <h1 className="text-4xl font-semibold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
-                  AI automation you can
+                  Connect your brand
                   <br />
-                  visually build and
+                  to the worlds leading
                   <br />
-                  orchestrate in real time
+                  AI systems and services
                 </h1>
                 <p className="mt-6 max-w-2xl text-base text-white/70 sm:text-lg">
                   IBOM brings no-code automation and AI agents into one visual-first platform so you can build with
