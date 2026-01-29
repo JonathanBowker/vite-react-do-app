@@ -4,6 +4,7 @@ import { RequireAuth } from './auth/RequireAuth'
 import AuthCallback from './pages/AuthCallback'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
+import OverviewPage from './pages/OverviewPage'
 import ProtectedPage from './pages/ProtectedPage'
 import ResetPasswordPage from './pages/ResetPasswordPage'
 import PortalPage from './pages/PortalPage'
@@ -14,6 +15,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/overview" element={<OverviewPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
           <Route path="/auth/reset" element={<ResetPasswordPage />} />

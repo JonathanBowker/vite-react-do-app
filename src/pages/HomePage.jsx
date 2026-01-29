@@ -60,9 +60,9 @@ export default function HomePage() {
           <nav className="hidden items-center gap-1 lg:flex">
             <HoverMenu label="What is IBOM">
               <div className="grid gap-1">
-                <a className="rounded-xl px-3 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-50" href="#overview">
+                <Link className="rounded-xl px-3 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-50" to="/overview">
                   Overview
-                </a>
+                </Link>
                 <a className="rounded-xl px-3 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-50" href="#how-it-works">
                   How it works
                 </a>
