@@ -173,11 +173,11 @@ export default function LoginPage() {
     <div className="min-h-[100svh] w-screen bg-slate-100">
       <div className="grid min-h-[100svh] w-full grid-cols-1 lg:grid-cols-12">
         <div className="flex items-center justify-center bg-slate-100 px-6 py-10 text-slate-900 lg:col-span-5">
-          <div className="w-full max-w-md lg:w-3/5 lg:max-w-none lg:translate-x-12">
+          <div className="w-full max-w-md lg:w-3/5 lg:max-w-none lg:translate-x-20">
             <div className="relative mb-7">
               <Link
                 to={nextPath}
-                className="inline-flex h-10 w-10 items-center justify-center text-slate-400 hover:text-slate-600 lg:absolute lg:-left-14 lg:top-1/2 lg:-translate-y-1/2"
+                className="inline-flex h-14 w-14 items-center justify-center text-slate-400 hover:text-slate-600 lg:absolute lg:-left-10 lg:top-1/2 lg:-translate-y-1/2"
                 aria-label="Back"
               >
                 <svg
@@ -187,7 +187,7 @@ export default function LoginPage() {
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className="h-8 w-8"
+                  className="h-16 w-16"
                 >
                   <path d="M15 18l-6-6 6-6" />
                 </svg>
