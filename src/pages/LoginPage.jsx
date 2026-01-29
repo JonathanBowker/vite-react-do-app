@@ -98,6 +98,8 @@ export default function LoginPage() {
       })
 
       if (error) throw error
+
+      navigate('/portal', { replace: true })
     } catch (err) {
       const rawMessage = err?.message || 'Failed to send magic link.'
       const lower = rawMessage.toLowerCase()
