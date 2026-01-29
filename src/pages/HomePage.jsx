@@ -238,9 +238,9 @@ export default function HomePage() {
                 <h1 className="text-4xl font-semibold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
                   Connect your brand
                   <br />
-                  to the worlds leading
+                  to leading vendor platforms
                   <br />
-                  AI systems and services
+                  through an intelligent control plane
                 </h1>
                 <p className="mt-6 max-w-2xl text-base text-white/70 sm:text-lg">
                   IBOM brings no-code automation and AI agents into one visual-first platform so you can build with
