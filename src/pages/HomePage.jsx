@@ -1,17 +1,23 @@
 import { Link } from 'react-router-dom'
 import { useAuth } from '../auth/useAuth'
-import { supabase } from '../lib/supabaseClient'
+import { isSupabaseConfigured, supabase } from '../lib/supabaseClient'
 
 export default function HomePage() {
   const { session, loading } = useAuth()
 
   async function signOut() {
-    await supabase.auth.signOut()
+    if (supabase) await supabase.auth.signOut()
   }
 
   return (
     <div style={{ padding: 24 }}>
       <h1>React + Magic Link Auth</h1>
+
+      {!isSupabaseConfigured ? (
+        <p>
+          Supabase not configured. Set <code>VITE_SUPABASE_URL</code> and <code>VITE_SUPABASE_ANON_KEY</code>.
+        </p>
+      ) : null}
 
       {loading ? (
         <p>Loading…</p>

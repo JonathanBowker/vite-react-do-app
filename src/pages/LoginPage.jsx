@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { supabase } from '../lib/supabaseClient'
+import { isSupabaseConfigured, supabase } from '../lib/supabaseClient'
 import './login.css'
 
 function getRedirectTo() {
@@ -24,6 +24,14 @@ export default function LoginPage() {
   async function sendMagicLink(event) {
     event.preventDefault()
     setStatus({ state: 'idle', message: '' })
+
+    if (!isSupabaseConfigured || !supabase) {
+      setStatus({
+        state: 'error',
+        message: 'Supabase is not configured. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.',
+      })
+      return
+    }
 
     if (!email.trim()) {
       setStatus({ state: 'error', message: 'Enter an email address.' })
@@ -58,7 +66,7 @@ export default function LoginPage() {
   async function signOut() {
     setBusy(true)
     try {
-      await supabase.auth.signOut()
+      if (supabase) await supabase.auth.signOut()
       navigate('/login', { replace: true })
     } finally {
       setBusy(false)
@@ -108,4 +116,3 @@ export default function LoginPage() {
     </div>
   )
 }
-

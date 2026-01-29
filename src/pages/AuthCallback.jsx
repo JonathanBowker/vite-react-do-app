@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { supabase } from '../lib/supabaseClient'
+import { isSupabaseConfigured, supabase } from '../lib/supabaseClient'
 
 export default function AuthCallback() {
   const navigate = useNavigate()
@@ -11,6 +11,11 @@ export default function AuthCallback() {
 
     async function run() {
       try {
+        if (!isSupabaseConfigured || !supabase) {
+          setMessage('Supabase is not configured. Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.')
+          return
+        }
+
         const { data, error } = await supabase.auth.getSession()
         if (error) throw error
 
@@ -39,4 +44,3 @@ export default function AuthCallback() {
     </div>
   )
 }
-

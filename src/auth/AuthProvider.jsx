@@ -1,12 +1,14 @@
 import { useEffect, useMemo, useState } from 'react'
-import { supabase } from '../lib/supabaseClient'
+import { isSupabaseConfigured, supabase } from '../lib/supabaseClient'
 import { AuthContext } from './authContext'
 
 export function AuthProvider({ children }) {
   const [session, setSession] = useState(null)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(isSupabaseConfigured)
 
   useEffect(() => {
+    if (!isSupabaseConfigured || !supabase) return
+
     let mounted = true
 
     supabase.auth
@@ -34,4 +36,3 @@ export function AuthProvider({ children }) {
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
-
