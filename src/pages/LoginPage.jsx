@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { isSupabaseConfigured, supabase } from '../lib/supabaseClient'
 
 function getRedirectTo() {
@@ -27,13 +27,7 @@ export default function LoginPage() {
   const [cooldownUntil, setCooldownUntil] = useState(0)
   const [now, setNow] = useState(() => Date.now())
 
-  const location = useLocation()
   const navigate = useNavigate()
-
-  const nextPath = useMemo(() => {
-    const from = location.state?.from?.pathname
-    return typeof from === 'string' && from.startsWith('/') ? from : '/'
-  }, [location.state])
 
   const cooldownSeconds = Math.max(0, Math.ceil((cooldownUntil - now) / 1000))
   const inCooldown = cooldownSeconds > 0
