@@ -24,3 +24,10 @@ If you are developing a production application, we recommend using TypeScript wi
 3. In Supabase Auth settings, allow redirect URL(s):
    - `http://localhost:5173/auth/callback`
    - your deployed `https://*.ondigitalocean.app/auth/callback`
+
+### Existing users only (no auto-signup)
+
+This app uses `shouldCreateUser: false`, so Supabase will only send magic links for users that already exist in your Supabase Auth users list.
+
+To add a user:
+- Supabase Dashboard → `Authentication` → `Users` → invite/create the user email

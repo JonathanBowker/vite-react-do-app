@@ -44,6 +44,7 @@ export default function LoginPage() {
         email: email.trim(),
         options: {
           emailRedirectTo: getRedirectTo(),
+          shouldCreateUser: false,
         },
       })
 
@@ -54,9 +55,13 @@ export default function LoginPage() {
         message: 'Check your email for a sign-in link.',
       })
     } catch (err) {
+      const rawMessage = err?.message || 'Failed to send magic link.'
+      const message = rawMessage.toLowerCase().includes('user not found')
+        ? 'No account exists for that email. Ask an admin to invite you first.'
+        : rawMessage
       setStatus({
         state: 'error',
-        message: err?.message || 'Failed to send magic link.',
+        message,
       })
     } finally {
       setBusy(false)
