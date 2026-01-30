@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { isSupabaseConfigured, supabase } from '../lib/supabaseClient'
+import CopyrightNotice from '../components/CopyrightNotice'
 
 export default function AuthCallback() {
   const navigate = useNavigate()
@@ -38,9 +39,13 @@ export default function AuthCallback() {
   }, [navigate])
 
   return (
-    <div style={{ padding: 24 }}>
+    <div className="mx-auto max-w-5xl p-6">
       <h1>Signing you in</h1>
       <p>{message}</p>
+
+      <footer className="mt-10 border-t border-slate-800 pt-6">
+        <CopyrightNotice className="text-xs text-slate-400" />
+      </footer>
     </div>
   )
 }

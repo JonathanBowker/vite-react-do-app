@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { isSupabaseConfigured, supabase } from '../lib/supabaseClient'
+import CopyrightNotice from '../components/CopyrightNotice'
 
 function getRedirectTo() {
   // Must be allowed in Supabase Auth settings (URL Configuration).
@@ -429,7 +430,7 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <div className="text-xs text-white/30">© {new Date().getFullYear()}</div>
+            <CopyrightNotice className="text-xs text-white/30" />
           </div>
         </div>
       </div>

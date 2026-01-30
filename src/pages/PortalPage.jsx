@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth/useAuth'
 import { supabase } from '../lib/supabaseClient'
+import CopyrightNotice from '../components/CopyrightNotice'
 
 export default function PortalPage() {
   const { session } = useAuth()
@@ -85,6 +86,10 @@ export default function PortalPage() {
           </div>
         </section>
       </div>
+
+      <footer className="mt-10 border-t border-slate-800 pt-6">
+        <CopyrightNotice className="text-xs text-slate-400" />
+      </footer>
     </div>
   )
 }

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useAuth } from '../auth/useAuth'
 import { isSupabaseConfigured, supabase } from '../lib/supabaseClient'
+import CopyrightNotice from '../components/CopyrightNotice'
 
 function MenuTrigger({ children }) {
   return (
@@ -344,6 +345,12 @@ export default function HomePage() {
           </div>
         </section>
       </main>
+
+      <footer className="border-t border-slate-200 bg-slate-100">
+        <div className="mx-auto max-w-7xl px-6 py-8">
+          <CopyrightNotice className="text-xs text-slate-500" />
+        </div>
+      </footer>
     </div>
   )
 }

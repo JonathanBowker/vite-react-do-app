@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { isSupabaseConfigured, supabase } from '../lib/supabaseClient'
+import CopyrightNotice from '../components/CopyrightNotice'
 import './login.css'
 
 function readHashParams() {
@@ -69,65 +70,68 @@ export default function ResetPasswordPage() {
 
   return (
     <div className="page">
-      <div className="card auth-card">
-        <h1>Reset password</h1>
-        <p className="muted">Set a new password for your account.</p>
+      <div className="flex w-full flex-col items-center">
+        <div className="card auth-card">
+          <h1>Reset password</h1>
+          <p className="muted">Set a new password for your account.</p>
 
-        {error ? (
-          <div className="alert error">
-            {errorCode ? <strong>{errorCode}: </strong> : null}
-            {errorDescription ? decodeURIComponent(errorDescription) : error}
+          {error ? (
+            <div className="alert error">
+              {errorCode ? <strong>{errorCode}: </strong> : null}
+              {errorDescription ? decodeURIComponent(errorDescription) : error}
+            </div>
+          ) : null}
+
+          <form onSubmit={setNewPassword} className="form">
+            <label className="label">
+              New password
+              <input
+                className="input"
+                type="password"
+                autoComplete="new-password"
+                placeholder="At least 8 characters"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                disabled={busy}
+                required
+              />
+            </label>
+
+            <label className="label">
+              Confirm password
+              <input
+                className="input"
+                type="password"
+                autoComplete="new-password"
+                placeholder="Repeat password"
+                value={confirm}
+                onChange={(e) => setConfirm(e.target.value)}
+                disabled={busy}
+                required
+              />
+            </label>
+
+            <button className="button primary" type="submit" disabled={busy || !hasRecoveryTokens}>
+              {busy ? 'Saving…' : 'Set new password'}
+            </button>
+          </form>
+
+          {status.message ? (
+            <div className={status.state === 'error' ? 'alert error' : 'alert ok'}>{status.message}</div>
+          ) : null}
+
+          <div className="footer">
+            <button className="button subtle" type="button" onClick={() => navigate('/login')} disabled={busy}>
+              Back to login
+            </button>
+            <button className="button subtle" type="button" onClick={() => navigate('/')} disabled={busy}>
+              Home
+            </button>
           </div>
-        ) : null}
-
-        <form onSubmit={setNewPassword} className="form">
-          <label className="label">
-            New password
-            <input
-              className="input"
-              type="password"
-              autoComplete="new-password"
-              placeholder="At least 8 characters"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              disabled={busy}
-              required
-            />
-          </label>
-
-          <label className="label">
-            Confirm password
-            <input
-              className="input"
-              type="password"
-              autoComplete="new-password"
-              placeholder="Repeat password"
-              value={confirm}
-              onChange={(e) => setConfirm(e.target.value)}
-              disabled={busy}
-              required
-            />
-          </label>
-
-          <button className="button primary" type="submit" disabled={busy || !hasRecoveryTokens}>
-            {busy ? 'Saving…' : 'Set new password'}
-          </button>
-        </form>
-
-        {status.message ? (
-          <div className={status.state === 'error' ? 'alert error' : 'alert ok'}>{status.message}</div>
-        ) : null}
-
-        <div className="footer">
-          <button className="button subtle" type="button" onClick={() => navigate('/login')} disabled={busy}>
-            Back to login
-          </button>
-          <button className="button subtle" type="button" onClick={() => navigate('/')} disabled={busy}>
-            Home
-          </button>
         </div>
+
+        <CopyrightNotice className="mt-6 text-center text-xs text-slate-400" />
       </div>
     </div>
   )
 }
-
